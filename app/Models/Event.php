@@ -22,6 +22,11 @@ class Event extends Model implements HasMedia
         'end_date',
         'slug',
     ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
     // public function registerMediaCollections(): void
     // {
     //     $this->addMediaCollection('event_images');
