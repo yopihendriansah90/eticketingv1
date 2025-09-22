@@ -13,7 +13,8 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->checkPermissionTo('view-any User');
+        // return $user->checkPermissionTo('view-any User');
+        return true;
     }
 
     /**
@@ -37,7 +38,8 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->checkPermissionTo('update User');
+        // return $user->checkPermissionTo('update User');
+        return true;
     }
 
     /**
