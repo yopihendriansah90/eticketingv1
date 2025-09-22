@@ -21,13 +21,13 @@
             <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group">
                 <div class="relative">
                     {{-- Mengubah aspect ratio ke potrait (3:4) --}}
-                    <div class="aspect-w-3 aspect-h-4">
-                        <img src="{{ $event->image_url ?? 'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/b7d429ac2d4c42e8aeb0d16b88d4ac67~.jpeg' }}" alt="{{ $event->name }}" class="object-cover w-full h-full">
+                    <div class="aspect-w-4 aspect-h-5">
+                        <img src="{{ $event->getFirstMediaUrl('posters') ?: 'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/b7d429ac2d4c42e8aeb0d16b88d4ac67~.jpeg' }}" alt="{{ $event->title }}" class="object-cover w-full h-full">
                     </div>
                     <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300"></div>
                 </div>
                 <div class="p-4 flex flex-col flex-grow">
-                    <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{ $event->name }}</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{ $event->title }}</h3>
                     <p class="text-sm text-gray-500 mb-2">{{ $event->start_date->format('d M Y') }} | {{ $event->location }}</p>
                     <div class="flex-grow"></div>
                     <div class="mt-2 mb-4">

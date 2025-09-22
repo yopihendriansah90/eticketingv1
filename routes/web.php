@@ -11,11 +11,30 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     // Eager load the tickets relationship to prevent N+1 query issues
     $events = Event::with('tickets')->get();
-    return view('welcome', ['events' => $events]);
+// Ambil event pertama untuk diuji
+    $firstEvent = $events->first();
+
+    // if ($firstEvent) {
+    //     // Coba dapatkan URL gambar
+    //     $imageUrl = $firstEvent->getFirstMediaUrl('posters');
+
+    //     // Dump informasi yang relevan
+    //     dd([
+    //         'event_title' => $firstEvent->title,
+    //         'generated_image_url' => $imageUrl,
+    //         'media_in_posters_collection' => $firstEvent->getMedia('posters')->count()
+    //     ]);
+    // } else {
+    //     dd('Tidak ada event yang ditemukan.');
+    // }
+
+    return view('index', ['events' => $events]);
 });
 
 Route::get('/events/{event:slug}', function (Event $event) {
-    $event->load('tickets'); // Eager load tickets for the single event
+    $event->load('tickets'); 
+    // dd($event->getFirstMediaUrl('posters'));
+    // Eager load tickets for the single event
     return view('events.show', ['event' => $event]);
 })->name('events.show');
 

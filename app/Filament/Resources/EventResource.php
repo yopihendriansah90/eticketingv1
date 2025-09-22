@@ -125,7 +125,7 @@ class EventResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Event Dihapus')
-                                ->body(fn($record) => "Event '{$record->title}' telah berhasil dihapus.")
+                                ->body('Event telah berhasil dihapus.')
                         ),
                     Tables\Actions\ForceDeleteAction::make()
                         ->modalHeading('Hapus Permanen Event')
@@ -135,7 +135,7 @@ class EventResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Event Dihapus Permanen')
-                                ->body(fn($record) => "Event '{$record->title}' telah berhasil dihapus permanen.")
+                                ->body('Event telah berhasil dihapus permanen.')
                         ),
                     Tables\Actions\RestoreAction::make()
                         ->modalHeading('Pulihkan Event')

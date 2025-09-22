@@ -1,67 +1,64 @@
 @extends('layouts.app')
 
-@section('title', 'Order Summary')
+@section('title', $event->title)
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Thank You for Your Order!</h1>
-            <p class="text-gray-600">Your order has been placed successfully.</p>
+    {{ 'halo' }}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {{-- Event Image --}}
+            {{-- FIX: Menggunakan getFirstMediaUrl untuk poster dan alt menggunakan title --}}
+            
+            <img src="{{ $event->getFirstMediaUrl('posters')}}" alt="{{ $event->title }}" class="rounded-lg shadow-lg w-full h-auto object-cover">
         </div>
 
-        <div class="border-t border-b border-gray-200 py-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Order Summary</h2>
-            <div class="flex justify-between mb-2">
-                <span class="text-gray-600">Order ID:</span>
-                <span class="font-mono text-gray-800">#{{ $order->id }}</span>
+        {{-- Event Details and Ticket Selection --}}
+        <div class="flex flex-col">
+            {{-- FIX: Menggunakan title bukan name --}}
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ $event->title }}</h1>
+            <div class="text-lg text-gray-600 mb-4">
+                <span>{{ $event->start_date->format('D, d M Y') }}</span>
+                <span class="mx-2">|</span>
+                <span>{{ $event->location }}</span>
             </div>
-            <div class="flex justify-between">
-                <span class="text-gray-600">Order Status:</span>
-                <span class="font-semibold capitalize px-2 py-1 text-sm rounded-full 
-                    @switch($order->status)
-                        @case('pending') bg-yellow-200 text-yellow-800 @break
-                        @case('paid') bg-green-200 text-green-800 @break
-                        @case('cancelled') bg-red-200 text-red-800 @break
-                        @default bg-gray-200 text-gray-800
-                    @endswitch">
-                    {{ $order->status }}
-                </span>
-            </div>
-        </div>
+            {{-- FIX: Menggunakan {!! !!} untuk render HTML dari description --}}
+            <div class="text-gray-700 mb-6 prose max-w-none">{!! $event->description !!}</div>
 
-        <div class="py-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-4">Items</h3>
-            <div class="space-y-4">
-                @foreach($order->items as $item)
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="font-semibold text-gray-800">{{ $item->ticket->name }}</p>
-                        <p class="text-sm text-gray-500">{{ $item->ticket->event->name }}</p>
+            <div class="border-t border-gray-200 pt-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Choose Your Ticket</h2>
+
+                @if($event->tickets->isNotEmpty())
+                    <form action="{{ route('orders.store') }}" method="POST">
+                        @csrf
+                        <div class="space-y-4">
+                            @foreach($event->tickets as $ticket)
+                                <div class="border rounded-lg p-4 flex justify-between items-center">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-800">{{ $ticket->name }}</h3>
+                                        <p class="text-md font-bold text-gray-900">Rp {{ number_format($ticket->price, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="ticket_{{ $ticket->id }}" class="sr-only">Quantity</label>
+                                        <input type="number" id="ticket_{{ $ticket->id }}" name="tickets[{{ $ticket->id }}]" min="0" value="0" class="w-20 text-center border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-lg">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </form>
+                @else
+                    <div class="bg-gray-100 rounded-lg p-8 text-center">
+                        <p class="text-lg font-semibold text-gray-700">Tickets for this event are not yet available.</p>
+                        <p class="text-gray-500">Please check back later.</p>
                     </div>
-                    <div class="text-right">
-                        <p class="font-semibold text-gray-800">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</p>
-                        <p class="text-sm text-gray-500">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                    </div>
-                </div>
-                @endforeach
+                @endif
             </div>
         </div>
-
-        <div class="border-t border-gray-200 pt-6">
-            <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-gray-800">Total</span>
-                <span class="text-xl font-bold text-gray-800">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
-            </div>
-        </div>
-
-        @if($order->status == 'pending')
-        <div class="mt-8 text-center">
-            <a href="#" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg">
-                Pay Now
-            </a>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

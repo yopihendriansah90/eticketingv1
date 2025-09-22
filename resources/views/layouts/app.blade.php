@@ -22,7 +22,7 @@
 
                 {{-- Desktop Nav Links --}}
                 <div class="flex items-center space-x-8">
-                    <a href="#" class="text-gray-500 hover:text-gray-700">Events</a>
+                    <a href="/" class="text-gray-500 hover:text-gray-700">Events</a>
                     <a href="#" class="text-gray-500 hover:text-gray-700">My Tickets</a>
                     <a href="/admin" class="text-gray-500 hover:text-gray-700">Admin</a>
                 </div>
@@ -38,7 +38,7 @@
     {{-- Mobile Bottom Navigation --}}
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 sm:hidden shadow-lg">
         <div class="flex h-16 justify-around items-center text-gray-500">
-            <a href="#" class="flex flex-col items-center justify-center p-2 text-center text-blue-500">
+            <a href="/" class="flex flex-col items-center justify-center p-2 text-center text-blue-500">
                 <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
