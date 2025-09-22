@@ -10,7 +10,20 @@ use Filament\Notifications\Notification;
 class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
-
+    // redirect ke halaman index
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+    // notifikasi berhasil edit data
+    protected function getSavedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Pengguna Diperbarui')
+            ->body('Pengguna telah berhasil disimpan.');
+    }
+    
     protected function getHeaderActions(): array
     {
         return [

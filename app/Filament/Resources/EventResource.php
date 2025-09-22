@@ -12,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\DateTimePicker;
@@ -41,14 +42,30 @@ class EventResource extends Resource
                 Forms\Components\TextInput::make('location')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
+                RichEditor::make('description')
+                // toolbar
+                    ->toolbarButtons([
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'undo',
+                    ])
+
                     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('start_date')
+                    ->native(false)
                     ->required(),
                 Forms\Components\DateTimePicker::make('end_date')
+                ->native(false)
                     ->required(),
-            ]);
+            ]); 
     }
 
     public static function table(Table $table): Table
@@ -67,12 +84,18 @@ class EventResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
+                    // ubah format tanggal dan jam nya dengan formta indonesia besaert zona wib
+                    ->date('d F Y H:i')
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->dateTime()
+                    ->date('d F Y H:i')
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -96,36 +119,36 @@ class EventResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->modalHeading('Hapus Event')
-                        ->modalDescription(fn ($record) => 'Apakah Anda yakin ingin menghapus event ' . $record->title . '?')
+                        ->modalDescription(fn($record) => 'Apakah Anda yakin ingin menghapus event ' . $record->title . '?')
                         ->modalSubmitActionLabel('Ya, Hapus')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Event Dihapus')
-                                ->body(fn ($record) => "Event '{$record->title}' telah berhasil dihapus.")
+                                ->body(fn($record) => "Event '{$record->title}' telah berhasil dihapus.")
                         ),
                     Tables\Actions\ForceDeleteAction::make()
                         ->modalHeading('Hapus Permanen Event')
-                        ->modalDescription(fn ($record) => 'Apakah Anda yakin ingin menghapus permanen event ' . $record->title . '? Data tidak dapat dikembalikan.')
+                        ->modalDescription(fn($record) => 'Apakah Anda yakin ingin menghapus permanen event ' . $record->title . '? Data tidak dapat dikembalikan.')
                         ->modalSubmitActionLabel('Ya, Hapus Permanen')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Event Dihapus Permanen')
-                                ->body(fn ($record) => "Event '{$record->title}' telah berhasil dihapus permanen.")
+                                ->body(fn($record) => "Event '{$record->title}' telah berhasil dihapus permanen.")
                         ),
                     Tables\Actions\RestoreAction::make()
                         ->modalHeading('Pulihkan Event')
-                        ->modalDescription(fn ($record) => 'Apakah Anda yakin ingin memulihkan event ' . $record->title . '?')
+                        ->modalDescription(fn($record) => 'Apakah Anda yakin ingin memulihkan event ' . $record->title . '?')
                         ->modalSubmitActionLabel('Ya, Pulihkan')
                         ->successNotification(
                             Notification::make()
                                 ->success()
                                 ->title('Event Dipulihkan')
-                                ->body(fn ($record) => "Event '{$record->title}' telah berhasil dipulihkan.")
+                                ->body(fn($record) => "Event '{$record->title}' telah berhasil dipulihkan.")
                         ),
                 ]),
-                
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

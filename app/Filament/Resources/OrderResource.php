@@ -20,7 +20,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     // urutkan berdasarkan data baru dibuat
-    protected static ?string $navigationLabel = 'Orders';
+    protected static ?string $navigationLabel = 'Order';
 
     protected static ?int $navigationSort = 3;
 
@@ -30,7 +30,7 @@ class OrderResource extends Resource
 
     protected static bool $shouldRegisterNavigation = true;
 
-    protected static ?string $navigationGroup = 'Shop';
+    protected static ?string $navigationGroup = 'Penjualan';
 
     protected static ?string $slug = 'orders';
 

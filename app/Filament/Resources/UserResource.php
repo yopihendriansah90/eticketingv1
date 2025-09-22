@@ -44,7 +44,6 @@ class UserResource extends Resource
                     ->dehydrated(fn($state) => filled($state))
                     ->maxLength(255),
                 Select::make('roles')
-                    // ->multiple()
                     ->preload()
                     ->relationship('roles', 'name')
                     ->required(),
